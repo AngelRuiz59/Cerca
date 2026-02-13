@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>No hay distancia</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Fondo horizontal (PC) */
+    body {
+      background-image: url("fondo-horizontal.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* Fondo vertical (celular) */
+    @media (max-width: 768px) {
+      body {
+        background-image: url("fondo-vertical.jpg");
+      }
+    }
+
+    /* Capa suave para que se lea el botón siempre */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at center,
+        rgba(0,0,0,0.15) 0%,
+        rgba(0,0,0,0.35) 60%,
+        rgba(0,0,0,0.55) 100%
+      );
+      pointer-events: none;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .btn {
+      padding: 18px 42px;
+      font-size: 22px;
+      border: none;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.92);
+      cursor: pointer;
+      box-shadow: 0px 10px 30px rgba(0,0,0,0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      animation: levitate 2.6s ease-in-out infinite;
+      letter-spacing: 0.4px;
+    }
+
+    .btn:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0px 14px 42px rgba(255, 192, 203, 0.35), 0px 12px 34px rgba(0,0,0,0.35);
+    }
+
+    .hint {
+      margin-top: 12px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    }
+
+    @keyframes levitate {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay"></div>
+
+  <!-- Música: sube tu archivo como "musica.mp3" -->
+  <audio id="bgm" src="musica.mp3" loop></audio>
+
+  <div class="wrap">
+    <a id="downloadLink" href="carta.pdf" download style="text-decoration:none;">
+      <button class="btn" id="btn">No hay distancia</button>
+    </a>
+    <div class="hint">Toca el botón 💌</div>
+  </div>
+
+  <script>
+    const bgm = document.getElementById("bgm");
+    const btn = document.getElementById("btn");
+
+    // En celulares/navegadores, el audio solo puede iniciar con interacción del usuario.
+    function startMusic() {
+      if (bgm.paused) {
+        bgm.volume = 0.6; // ajusta volumen 0.0 a 1.0
+        bgm.play().catch(() => {});
+      }
+    }
+
+    // Inicia música al primer toque/clic (en el botón o en la pantalla)
+    btn.addEventListener("click", startMusic);
+    document.addEventListener("click", startMusic, { once: true });
+    document.addEventListener("touchstart", startMusic, { once: true });
+  </script>
+</body>
+</html>
